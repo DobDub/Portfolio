@@ -46,13 +46,46 @@
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -30px;
+            left: -40px;
             top: 5px;
             width: 20px;
             height: 20px;
             border-radius: 50%;
             background-color: #374151;
             border: 4px solid #4F46E5;
+            animation: timeline-pulse 2.2s ease-out infinite;
+            transform-origin: center;
+        }
+        @keyframes timeline-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.55);
+                transform: scale(1);
+            }
+            40% {
+                transform: scale(1.06);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(79, 70, 229, 0);
+                transform: scale(1);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+                transform: scale(1);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .timeline-item::before { animation: none; }
+        }
+        /* Justify copy in About section only */
+        .about-copy p {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        /* Justify copy in Experience section */
+        .experience-copy p,
+        .experience-copy li {
+            text-align: justify;
+            text-justify: inter-word;
         }
         /* Typewriter caret for rotating phrase */
         #rotating-phrase.typewriter-caret {
@@ -98,7 +131,7 @@
                 <div class="absolute -top-32 -left-20 w-[36rem] h-[36rem] rounded-full bg-indigo-600/20 blur-3xl"></div>
                 <div class="absolute -bottom-32 -right-20 w-[40rem] h-[40rem] rounded-full bg-purple-600/20 blur-3xl"></div>
             </div>
-            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-start">
                 <!-- Intro copy -->
                 <div>
                     <p class="text-indigo-400 font-semibold tracking-wide mb-2">Hey, I'm Hassan 👋</p>
@@ -172,9 +205,12 @@
         <!-- About Section -->
         <section id="about" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center text-white mb-12">About Me</h2>
+                <div class="mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">About Me</h2>
+                    <div class="mt-2 h-1 w-20 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                </div>
                 <div class="flex flex-col md:flex-row items-center gap-12">
-                    <div class="md:w-2/3">
+                    <div class="md:w-2/3 about-copy">
                         <p class="text-lg mb-4">
                             I am a recent graduate with a Bachelor's in Software Engineering from Concordia University, passionate about tackling complex problems and building software that makes a difference. My experience spans the full software development lifecycle, from architecting backend systems with Java and TypeScript to designing user-friendly frontends with React.
                         </p>
@@ -208,13 +244,16 @@
         <!-- Experience Section -->
         <section id="experience" class="py-20 bg-gray-900">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center text-white mb-12">Experience</h2>
-                <div class="max-w-3xl mx-auto">
-                    <div class="relative border-l-2 border-gray-700 pl-10">
+                <div class="mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Experience</h2>
+                    <div class="mt-2 h-1 w-20 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                </div>
+                <div class="experience-copy">
+                    <div class="relative border-l-2 border-gray-700 pl-10 ml-5">
                         <div class="timeline-item mb-12">
                             <h3 class="text-2xl font-bold text-white">Software Engineer Intern, SDWAN</h3>
                             <p class="text-indigo-400 font-semibold mb-2">Cisco | Ottawa, ON</p>
-                            <p class="text-gray-400 mb-4">May 2023 - Jan 2024</p>
+                            <p class="text-gray-400 mb-4">May 2023 - Jan 2025</p>
                             <ul class="list-disc list-inside text-gray-300 space-y-2">
                                 <li>Engineered a user-facing monitoring tool in React to provide real-time visibility into cluster node upgrades.</li>
                                 <li>Developed and integrated Go-based backend APIs to serve real-time upgrade data to the frontend.</li>
@@ -230,7 +269,10 @@
         <!-- Projects Section -->
         <section id="projects" class="py-20">
             <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center text-white mb-12">My Projects</h2>
+                <div class="mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">My Projects</h2>
+                    <div class="mt-2 h-1 w-20 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                </div>
                 <div id="project-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Project cards will be injected here by JavaScript -->
                 </div>
@@ -256,7 +298,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 py-6">
         <div class="container mx-auto px-6 text-center text-gray-500">
-            <p>&copy; 2024 Hassan Moharram. All Rights Reserved.</p>
+            <p>&copy; 2025 Hassan Moharram. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -310,7 +352,7 @@
             },
             {
                 title: "Probabilistic Models (GNB)",
-                description: "Built Gaussian Naive Bayes from scratch and compared its performance against the Scikit-Learn library implementation on image datasets.",
+                description: "Built Gaussian Naive Bayes and compared its performance against the Scikit-Learn library implementation on image datasets.",
                 tags: ["Python", "AI/ML", "Scikit-Learn", "Kaggle"],
                 imageUrl: "images/GNB.png",
                 links: [
@@ -320,7 +362,7 @@
             },
             {
                 title: "Tree-Based Models",
-                description: "Developed a Decision Tree classifier from scratch and benchmarked its performance against the standard Scikit-Learn version.",
+                description: "Developed a Decision Tree classifier and benchmarked its performance against the standard Scikit-Learn version.",
                 tags: ["Python", "AI/ML", "Scikit-Learn", "Kaggle"],
                 imageUrl: "images/tree.png",
                 links: [
@@ -347,12 +389,15 @@
                         <i class="${link.icon}"></i>
                     </a>
                 `).join('');
+                const imgFitClass = (project.imageUrl || '').toLowerCase().includes('trackmydegree')
+                    ? 'object-contain bg-gray-800'
+                    : 'object-cover';
 
                 projectHTML += `
                     <div class="project-card rounded-lg overflow-hidden flex flex-col">
                         <div class="relative">
-                            <img src="${project.imageUrl}" alt="${project.title}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1F2937/E5E7EB?text=Image+Not+Found';">
-                            ${badgesHTML ? `<div class=\"absolute top-2 left-2 flex flex-wrap gap-2\">${badgesHTML}</div>` : ''}
+                            <img src="${project.imageUrl}" alt="${project.title}" class="w-full h-48 ${imgFitClass}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1F2937/E5E7EB?text=Image+Not+Found';">
+                            ${badgesHTML ? `<div class=\"absolute top-2 right-2 flex flex-wrap gap-2\">${badgesHTML}</div>` : ''}
                         </div>
                         <div class="p-6 flex flex-col flex-grow">
                             <h3 class="text-xl font-bold text-white mb-2">${project.title}</h3>
