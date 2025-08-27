@@ -54,6 +54,16 @@
             background-color: #374151;
             border: 4px solid #4F46E5;
         }
+        /* Typewriter caret for rotating phrase */
+        #rotating-phrase.typewriter-caret {
+            border-right: 2px solid #E5E7EB;
+            padding-right: 2px;
+            white-space: nowrap;
+            animation: caret-blink 1s steps(1) infinite;
+        }
+        @keyframes caret-blink {
+            50% { border-color: transparent; }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -364,7 +374,7 @@
         // Render projects on page load
         document.addEventListener('DOMContentLoaded', renderProjects);
 
-        // Rotating hero phrase
+        // Type & backspace rotating hero phrase
         document.addEventListener('DOMContentLoaded', () => {
             const el = document.getElementById('rotating-phrase');
             if (!el) return;
@@ -375,15 +385,45 @@
                 'CI/CD pipelines',
                 'delightful UIs'
             ];
-            let i = 0;
-            setInterval(() => {
-                i = (i + 1) % phrases.length;
-                el.style.opacity = '0';
-                setTimeout(() => {
-                    el.textContent = phrases[i];
-                    el.style.opacity = '1';
-                }, 250);
-            }, 2200);
+            const typeSpeed = 70;   // ms per character when typing
+            const deleteSpeed = 45; // ms per character when deleting
+            const holdAfterType = 1100; // pause after a word is fully typed
+            const holdAfterDelete = 300; // pause before typing next word
+
+            let phraseIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            el.classList.add('typewriter-caret');
+
+            function step() {
+                const current = phrases[phraseIndex];
+
+                if (!isDeleting) {
+                    // Typing
+                    charIndex = Math.min(charIndex + 1, current.length);
+                    el.textContent = current.slice(0, charIndex);
+                    if (charIndex === current.length) {
+                        isDeleting = true;
+                        return setTimeout(step, holdAfterType);
+                    }
+                    return setTimeout(step, typeSpeed);
+                } else {
+                    // Deleting
+                    charIndex = Math.max(charIndex - 1, 0);
+                    el.textContent = current.slice(0, charIndex);
+                    if (charIndex === 0) {
+                        isDeleting = false;
+                        phraseIndex = (phraseIndex + 1) % phrases.length;
+                        return setTimeout(step, holdAfterDelete);
+                    }
+                    return setTimeout(step, deleteSpeed);
+                }
+            }
+
+            // Start with clearing current content to type from scratch
+            el.textContent = '';
+            step();
         });
     </script>
 </body>
