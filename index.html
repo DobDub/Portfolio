@@ -396,6 +396,46 @@
 
             el.classList.add('typewriter-caret');
 
+            // Keep the whole line's height fixed so elements above/below don't shift when typing/deleting
+            function setParagraphMinHeight() {
+                const line = el.parentElement; // the <p> element containing the rotating phrase
+                if (!line) return;
+
+                // Clone the line to measure tallest possible height without altering the visible content
+                const clone = line.cloneNode(true);
+                clone.style.position = 'absolute';
+                clone.style.visibility = 'hidden';
+                clone.style.pointerEvents = 'none';
+                clone.style.width = line.offsetWidth + 'px'; // preserve wrapping width
+                document.body.appendChild(clone);
+                const cloneSpan = clone.querySelector('#rotating-phrase');
+                let maxH = 0;
+                if (cloneSpan) {
+                    const original = cloneSpan.textContent;
+                    for (const p of phrases) {
+                        cloneSpan.textContent = p;
+                        // read after content change to force reflow and capture height
+                        maxH = Math.max(maxH, clone.offsetHeight);
+                    }
+                    cloneSpan.textContent = original;
+                } else {
+                    maxH = clone.offsetHeight;
+                }
+                clone.remove();
+                if (maxH > 0) {
+                    line.style.minHeight = maxH + 'px';
+                }
+            }
+
+            // Initial min-height computation (before animation starts)
+            setParagraphMinHeight();
+            // Recompute on resize (debounced) to keep layout stable across breakpoints
+            let resizeT;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeT);
+                resizeT = setTimeout(setParagraphMinHeight, 150);
+            });
+
             function step() {
                 const current = phrases[phraseIndex];
 
